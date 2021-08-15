@@ -2,7 +2,7 @@
 When I started the final project, I had no idea how and what I was going to do. Later I decided that since I like blogging I would create my own blog using Django. And I did.. This is an advanced dynamic and SEO friendly blogging website. I included every possible thing in my project and I can't believe it now, I created this website. This is not only finaly project for CS50W, it's my future blogging platforms. I'm feeling so proude, finally I've done this.
 
 # YAMiN Blog AND CMS System #
-> Project Name: YAMiN; 
+> Project Name: YAMiN
 
 > Project Type: Blog, CMS, Publishing Tool 
 
@@ -26,7 +26,7 @@ You can see the localhost IP with the port. Open it on your web browser.
 You will find my "BASE_ENV.yml" root directory on this project. Just import this "BASE_ENV.yml" to your conda new enviroment and run this above 3 commends.
 
 
-##################################################################################################
+#####################################################################
 
 # Site Features:
 > Full Control Dynamic System 
