@@ -72,7 +72,7 @@ You will find my "BASE_ENV.yml" root directory on this project. Just import this
 > Edit siteconfig, Privacy Page, About Us page, favicon, Site title, Keywords, Descriptions and much more..
 
 
-****************************************************************************************************
+*****************************************************************************
 This is final project for CS50W. This is an advanced dynamics and SEO friendly blogging website. SEO friendly url and also sitemap added on this website. Also dynamics SEO meta tags, keywords, description and cover image added to this website.
 
 This website has two part. One is for User Panel, Another is for SuperAdmins. 
@@ -89,10 +89,10 @@ Here is another Pie chart on the super admin dashboard where admin will see full
 Another tab for admin panel, Here is an email subscriber option, where admins can see all email subscribed users and also admin able to download or print as pdf all subscriber list.
 
 And last tab in Admin panel, The "SiteConfig". Here super admins can update website's title, keywords, descriptions, body tags and favicons. Also they can update website's Privacy Policy and About Us page from these admin panel.
-****************************************************************************************************
+*****************************************************************************
 
 
-##################################################################################################
+#####################################################################
 
 # Note:
 > No one can post dobule entry to the website like (same slug url, same comment, same usersname).
