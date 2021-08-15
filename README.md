@@ -2,10 +2,13 @@
 When I started the final project, I had no idea how and what I was going to do. Later I decided that since I like blogging I would create my own blog using Django. And I did.. This is an advanced dynamic and SEO friendly blogging website. I included every possible thing in my project and I can't believe it now, I created this website. This is not only finaly project for CS50W, it's my future blogging platforms. I'm feeling so proude, finally I've done this.
 
 # YAMiN Blog AND CMS System #
-Project Name: YAMiN; 
-Project Type: Blog, CMS, Publishing Tool 
-Framework: Django 3.2.3
-Environment: Conda (BASE_ENV.yml)
+> Project Name: YAMiN; 
+
+> Project Type: Blog, CMS, Publishing Tool 
+
+> Framework: Django 3.2.3
+
+> Environment: Conda (BASE_ENV.yml)
 
 # How to run this Website?
 Just download this project. Activate the python conda environment to your IDE, Type the following two commands:
