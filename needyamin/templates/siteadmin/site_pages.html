@@ -1,0 +1,141 @@
+{% extends "layout.html" %}
+
+ {% block body %}
+ <title> Site Pages | SuperAdmin Panel</title>
+
+ {% if request.user.is_superuser %}
+ 
+ <div class="container"> 
+
+   <div class="alert alert-info alert-dismissible">
+     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+     <strong>Welcome SuperAdmin, {{ user.username }}!</strong> 
+   </div>
+ 
+   {% if messages %}
+   {% for message in messages %}
+   <div class="container"><div class="alert alert-danger" role="alert" class="{{ message.tags }}"  {% if message.tags %}  {% endif %} > 
+     {{ message }} </div></div>
+   {% endfor %}
+   {% endif %}
+
+
+
+
+ <hr>
+ <a href="{% url 'admin_pending' %}" class="btn-sm btn-primary">All Pending Post <span class="btn-danger badge">{{ count_pending }}</span></a>
+ <span style="color: white;"> . </span>
+ 
+ <a href="{% url 'admin_subscriber' %}" class="btn-sm btn-primary">All Subscriber <span class="btn-danger badge">{{ count_subscriber }}</span></a>
+ <span style="color: white;"> . </span>
+ 
+ <a href="{% url 'site_config' %}" class="btn-sm btn-primary">Site Config </a>
+ <span style="color: white;"> . </span>
+ 
+ <a href="{% url 'site_pages' %}" class="btn-sm btn-secondary">Site Pages </a>
+ 
+ <hr>
+
+ 
+
+ <div class="row"> 
+ <div class="col-sm-6">
+
+ <!-- privacy-->
+ 
+<h1>Privacy Policy</h1>
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+ <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+ <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+ 
+ 
+ <form action="{% url 'admin_update_privacy' %}" method="post"> 
+    {% csrf_token %}
+    <textarea id="summernote" name="content_privacy" minlength="20">{% for me in fetch %}{{ me.privacy }}{% endfor %}</textarea>
+      <div class="form-group">
+        <input class="form-control btn-primary" autofocus type="submit" name="submit"value="Update Privacy Policy"> 
+      </div> 
+    </form>  
+
+
+
+<script>
+    $('#summernote').summernote({
+   placeholder: 'Write your journal here..',
+   tabsize: 2,
+   height: 200,
+   toolbar: [
+['para', ['ul', 'ol', 'paragraph']],
+['style', ['bold', 'italic', 'underline']],
+['fontsize', ['fontsize']],
+['color', ['color']],
+['codeview', ['codeview']],
+['fullscreen', ['fullscreen']],
+['height', ['height']],
+['clear', ['clear']]
+
+]
+    });</script> 
+<!-- end -->   
+
+ </div>
+ 
+ <div class="col-sm-6 card">
+ 
+
+<!-- About US-->
+<h1>About US</h1>
+<form action="{% url 'admin_update_about_us' %}" method="post"> 
+    {% csrf_token %}
+    <textarea id="aboutus" name="content_about_us" minlength="20">{% for me in fetch %}{{ me.aboutus }}{% endfor %}</textarea>
+      <div class="form-group">
+        <input class="form-control btn-primary" autofocus type="submit" name="submit" value="Update About Us"> 
+      </div> 
+    </form>  
+
+
+
+<script>
+    $('#aboutus').summernote({
+   placeholder: 'Write your journal here..',
+   tabsize: 2,
+   height: 200,
+   toolbar: [
+['para', ['ul', 'ol', 'paragraph']],
+['style', ['bold', 'italic', 'underline']],
+['fontsize', ['fontsize']],
+['color', ['color']],
+['codeview', ['codeview']],
+['fullscreen', ['fullscreen']],
+['height', ['height']],
+['clear', ['clear']]
+
+]
+    });</script> 
+
+
+
+
+
+
+ </div>
+ 
+ 
+  </div>
+ 
+ {% else %}
+ 
+ <div class="container"> 
+     <p> You have no permission for visit this page</p>
+     </div>
+ 
+  {% endif %}
+ 
+ 
+ 
+ 
+ 
+ 
+ {% endblock %}

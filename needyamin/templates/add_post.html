@@ -1,0 +1,190 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<title> Add New Post | User Panel</title>
+    
+{% load static %}
+
+<div class="container"> 
+  
+  <hr>
+  <a href="#" class="btn-sm btn-secondary">Add New Post</a>
+  <span style="color: white;"> .</span>
+  <a href="{% url 'active_post' %}" class="btn-sm btn-primary">Active Post <span class="btn-danger badge">{{ count_active }}</span> </a>
+  <span style="color: white;"> .</span>
+  <a href="{% url 'pending_post' %}" class="btn-sm btn-primary">Pending Post <span class="btn-danger badge">{{ count_pending }}</span></a>
+  <span style="color: white;"> .</span>
+  <a href="{% url 'draft' %}" class="btn-sm btn-primary">Draft <span class="btn-danger badge">{{ count_draft }}</span></a>
+  <span style="color: white;"> .</span>
+
+
+  <a href="{% url 'user_profile' %}" class="btn-sm btn-primary">User Profile</a>
+  <span style="color: white;"> .</span>
+
+
+
+  {% if request.user.is_superuser %}
+  <a href="/dashboard/siteadmin/" class="btn-sm btn-danger">Admin</a>
+  {% endif %}
+  
+  <hr>
+
+
+
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    
+      {% if message %}
+<div class="alert alert-danger" role="alert"> {{ message }} </div>
+        {% endif %}
+  
+
+
+    {% if user.is_authenticated %}
+ <div class="row">
+     <div class="col-sm-7">
+
+     <form method="POST" class="form-needyamin" enctype="multipart/form-data"> 
+      {% csrf_token %}
+        <div class="form-group">
+           Post Title: <input class="form-control" autofocus type="text" name="post_title" onClick="myFunction()" id="slug-source" placeholder="Post Title" value="{{ request.POST.post_title }}" required>
+         </div>
+
+         <div class="form-group"> 
+         Slug URL: <span class="text-muted">(www.yoursite.com/<b>this-is-slug)</b></span> <input class="form-control" type="text" name="slug" value="{{ request.POST.slug }}" onClick="myFunction()"  id="slug-target" placeholder="Slug-Url" onBlur="checkAvailability()" required> 
+
+
+
+
+    {% if slugdetect %}
+         <span style="color: red;">{{ slugdetect }}</span>
+     {% endif %}
+
+        </div>
+  
+
+         <textarea id="summernote" name="content" minlength="20">{{ request.POST.content }}</textarea>
+
+     </div>
+        
+     <div class="col-sm-5">
+         
+          <div class="form-group">
+            <table> 
+          <tr> 
+             
+          <td>
+            <select class="form-control btn-danger" name="status" style="width: 150px;">
+              <option value="1"> <value>Published</value></option>   
+            <option value="3"> Draft</option> 
+           </select>
+          </td>
+
+          <td>
+            <input class="form-control btn-primary" autofocus type="submit" id="submit" name="submit" value="Save" style="width: 150px;"> 
+              </td> 
+
+               </tr>
+                    </table>
+         </div>
+
+         <div class="form-group card p-3">            
+          <center> <img id="blah" src="#" width="250px" onerror="this.onerror=null; this.src='{% static 'not-selected.jpg' %}'" />
+          <input accept="image/*" type="file" id="image" name="image" required> </center>
+  
+        <script>image.onchange = evt => {
+          const [file] = image.files
+          if (file) {
+            blah.src = URL.createObjectURL(file)
+          }
+        } </script> 
+
+
+
+         </div>
+
+         Tags:
+         <div class="form-group">
+          <input class="form-control" autofocus type="text" id="TAG" name="tags" value="{{ request.POST.tags }}"  onclick="getInputValue();" placeholder="Tags">
+          <span id="demo"></span>
+
+     
+          <script>
+          function getInputValue(){
+          let str = document.getElementById("TAG").value;
+          const myArr = str.split(" ");
+          document.getElementById("demo").innerHTML = myArr; }
+          </script>
+
+
+          
+
+
+
+
+          <script type="text/javascript">
+            function myFunction() {
+                var a = document.getElementById("slug-source").value;
+                var b = a.toLowerCase().replace(/ /g, '-')
+                    .replace(/[^\w-]+/g, '');
+                document.getElementById("slug-target").value = b;
+                document.getElementById("slug-target-span").innerHTML = b;
+              }
+         </script>        
+
+
+
+
+
+
+       
+        </div>
+
+    </form>  
+
+
+
+
+ </div>   
+
+
+ <script>
+  $('#summernote').summernote({
+ placeholder: 'Write your article here..',
+ tabsize: 2,
+ height: 240,
+ toolbar: [
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['style', ['bold', 'italic', 'underline']],
+    ['font', ['strikethrough']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['table', ['table']],
+    ['codeview', ['codeview']],
+    ['fullscreen', ['fullscreen']],
+    ['height', ['height']],
+    ['clear', ['clear']]
+
+  ]
+  });</script> 
+{% else %}
+
+<div class="center"> Please login before access this page</div>
+
+{% endif %} 
+
+</div>
+
+
+</body>
+
+
+
+
+
+{% endblock %}

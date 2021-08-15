@@ -1,0 +1,174 @@
+{% extends "layout.html" %}
+{% block body %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'datatables.css' %}"/>
+<script type="text/javascript" src="{% static 'jquery-3.5.1.js' %}"></script>
+<script type="text/javascript" src="{% static 'jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'dataTables.bootstrap4.min.js' %}"></script>
+
+
+
+<div class="container">
+    <h2>Advance Search</h2>
+    <br>
+
+Your Search Result Query "<span class="text-danger">{% if q %}{{ q }}{% else %}--{% endif %}</span>"  matches with our <span class="text-danger">{{ search }}</span> records. Please use advance search filter for more information
+
+    <hr>
+
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#home">All Post</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu1">All Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu2">All Comments</a>
+      </li>
+    </ul>
+  
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div id="home" class="container tab-pane active"><br>
+        <h3>All Posts</h3>
+ <!-- Table start-->
+ <table id="example" class="table table-striped table-bordered" style="width:100%">
+  <thead>
+      <tr>
+          <th>Post Title</th>
+          <th>Post Description</th>
+          <th>Date</th>
+   
+      </tr>
+  </thead>
+  <tbody>
+      {% for needyamin in All_Post %}
+      <tr>
+          <td style="word-break: break-all;"><a href="/{{ needyamin.username }}/{{ needyamin.slug }}"> {{ needyamin.title }}</a></td>
+          <td style="word-break: break-all;">{{ needyamin.contents|striptags|slice:":180" }}
+
+<!-- Large modal -->
+<a href=""class="tex-primary" data-toggle="modal" data-target="#exampleModalLong{{ needyamin.id }}">Read More</a>
+
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="exampleModalLong{{ needyamin.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle" style="word-break: break-all;">{{ needyamin.title }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <img src="media/{{ needyamin.image }}" class="rounded mx-auto d-block" style="word-break: break-all;"> <br>
+        {{ needyamin.contents|striptags }}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+          </td>
+          <td width="150px">{{ needyamin.date }} </td>
+          <!--<td><img src="media/{{ needyamin.image }}" class="img-thumbnail" width="250px"></td>-->
+  
+      </tr>
+
+      {% endfor %}
+  </tbody>
+  
+</table>
+
+
+
+<!-- Table End-->
+
+
+
+      </div>
+      <div id="menu1" class="container tab-pane fade"><br>
+        <h3>All Users</h3>
+        <!-- Table start-->
+ <table id="example2" class="table table-striped table-bordered" style="width:100%">
+  <thead>
+      <tr>
+          <th>Username</th>
+          <th>Last Login</th>
+          <th width="150px">Account Creation Date</th>
+    
+
+      </tr>
+  </thead>
+  <tbody>
+      {% for needyamin in All_Users %}
+      <tr>
+          <td><a href="{{ needyamin.username }}"> {{ needyamin.username }}</a></td>
+          <td>{{ needyamin.last_login }}</td>
+          <td>{{ needyamin.date_joined }} </td>
+
+  
+      </tr>
+
+      {% endfor %}
+  </tbody>
+  
+</table>
+
+<!-- Table End-->
+      </div>
+
+
+
+   <div id="menu2" class="container tab-pane fade"><br>
+        <h3>All Comments</h3>
+        <!-- Table start-->
+ <table id="example3" class="table table-striped table-bordered" style="width:100%">
+  <thead>
+      <tr>
+          <th>Comment</th>
+          <th>Comment Post</th>
+          <th>Date</th>
+       
+
+      </tr>
+  </thead>
+  <tbody>
+      {% for needyamin in All_Comments %}
+      <tr>
+          <td style="word-break: break-all;"><a href="/{{ needyamin.user }}/{{ needyamin.post.slug }}"> {{ needyamin.comment|striptags|slice:":250" }}</a> by {{ needyamin.user }}</td>
+          <td style="word-break: break-all;">{{ needyamin.post.title }} </td>
+          <td>{{ needyamin.time_posted }} </td>
+         
+      </tr>
+
+      {% endfor %}
+  </tbody>
+  
+</table>
+
+<script> $(document).ready(function() {
+$('#example').DataTable();
+$('#example2').DataTable();
+$('#example3').DataTable();
+} );</script>
+
+<!-- Table End-->
+      </div>
+    </div>
+  </div>
+  
+
+
+
+
+{% endblock %}

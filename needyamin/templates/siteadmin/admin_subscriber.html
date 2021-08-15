@@ -1,0 +1,85 @@
+{% extends "siteadmin/index.html" %}
+
+{% block body %}
+<title> All Subscriber | SuperAdmin Panel</title>
+
+{% load static %}
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'datatables.css' %}"/>
+<script type="text/javascript" src="{% static 'jquery-3.5.1.js' %}"></script>
+<script type="text/javascript" src="{% static 'jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'dataTables.bootstrap4.min.js' %}"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+
+
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+
+
+<div class="container">
+    
+    <hr>
+    <a href="{% url 'admin_pending' %}" class="btn-sm btn-primary">All Pending Post <span class="btn-danger badge">{{ count_pending }}</span></a>
+    <span style="color: white;"> . </span>
+    
+    <a href="{% url 'admin_subscriber' %}" class="btn-sm btn-secondary">All Subscriber <span class="btn-danger badge">{{ count_subscriber }}</span></a>
+    <span style="color: white;"> . </span>
+    
+    <a href="{% url 'site_config' %}" class="btn-sm btn-primary">Site Config </a>
+    <span style="color: white;"> . </span>
+    
+    <a href="{% url 'site_pages' %}" class="btn-sm btn-primary">Site Pages </a>
+    
+    <hr>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container"><div class="alert alert-danger" role="alert" class="{{ message.tags }}"  {% if message.tags %}  {% endif %} > 
+      {{ message }} </div></div>
+    {% endfor %}
+    {% endif %}
+    
+
+
+<table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Sr</th>
+                <th>Email</th>
+                <th>Record IP</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for needyamin in subscriber %}
+            <tr>
+                <td style="word-break: break-all;">{{ forloop.counter }}</td>
+                <td style="word-break: break-all;">{{ needyamin.email }}</td>
+                <td >{{ needyamin.ip }} </td>
+                <td><a href="{% url 'admin_delete_subscriber' %}?id={{ needyamin.id }}"> <i class="fa fa-trash" aria-hidden="true"></i></a></td>
+        
+            </tr>
+  
+            {% endfor %}
+        </tbody>
+        
+    </table>
+    
+</div>
+<script> $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
+} );</script>
+
+
+{% endblock %}

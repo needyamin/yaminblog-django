@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+{% for needyamin in fetch %}
+    <loc>{{ forloop.counter }}. <a href="{{ needyamin.username }}/{{ needyamin.slug }}">{{ needyamin.username }}/{{ needyamin.slug }} </a></loc><br>
+    <lastmod>  {{ needyamin.date }} </lastmod> <br><br>
+{% endfor %}
+</url>
+</urlset>
+

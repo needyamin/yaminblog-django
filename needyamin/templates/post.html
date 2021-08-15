@@ -1,0 +1,203 @@
+{% extends "layout.html" %}
+{% load static %}
+
+      {% block head %}
+      <title>{% for needyamin in fetch %}{{ needyamin.title }}{% endfor %} | {% for me in siteconfig %}{{ me.title }}{% endfor %}</title>
+       <link rel="icon" href="/media/{% for me in siteconfig %}{{ me.favourite_icon }}{% endfor %}" type="image/gif" sizes="16x16"> 
+       <meta charset="utf-8">
+       <meta content='{% for me in siteconfig %}{{ me.keywords }}{% endfor %}' name='keywords'/>
+       <meta name="Description" CONTENT="{% for needyamin in fetch %}{{ needyamin.contents|striptags|slice:':155' }}{% endfor %}">
+       <meta name="robots" content="noindex,nofollow">
+
+       <meta property="og:url" content="" />
+       <meta property="og:type" content="blog" />
+       <meta property="og:title" content="{% for me in siteconfig %}{{ me.title }}{% endfor %}"/>
+       <meta property="og:description" content="{% for needyamin in fetch %}{{ needyamin.contents|striptags|slice:':155' }}{% endfor %}" />
+       <meta property="og:image" content="{{ request.build_absolute_uri }}{% for needyamin in fetch %}/../../media/{{ needyamin.image }}{% endfor %}" />
+       {% endblock %}
+
+
+
+
+
+
+{% block body %}
+
+<div class="container">
+    <div class="row p-2"> 
+    <div class="col-sm-8">   
+
+      {% for needyamin in fetch %}
+
+        <div class="card p-2">
+          <div style="background: rgb(194, 194, 194); padding: 5px;">
+            <a data-toggle="modal" data-target=".bd-example-modal-lg"><img class="rounded mx-auto d-block" alt="Responsive image" src="../media/{{ needyamin.image }}"></a> </div>
+
+            <div class="card-body">
+              <h5 class="card-title">{{ needyamin.title }} </h5>
+              <p>Posted by: <a href="/{{needyamin.user }}"> {{needyamin.user }}</a> at <span class="text-muted">{{ needyamin.date }}</span></p>
+              <p class="card-text">{{ needyamin.contents|safe }}</p>
+            </div>
+          </div> <div class="card p-2" style="margin-top: 5px;">Tags: {{ needyamin.tags|striptags|cut:"["|cut:"]"|cut:"'"|cut:"'" }} </div>
+    
+<!-- lightbox model image start-->
+          <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                <img  width="70%" class="rounded mx-auto d-block" src="../media/{{ needyamin.image }}"> 
+              </div>
+            </div>
+          </div>
+        </div>
+<!-- lightbox model image end-->
+
+
+
+     <div class="card p-2" style="margin-top: 8px;"> 
+          {% for needyamin in comm_in %}
+
+         <div class="card p-3" style="margin-top: 5px;"><p>
+          <a href="/{{needyamin.user }}"><span style="font-size: 22px;"> <i class="fa fa-user" aria-hidden="true"></i> {{needyamin.user }} </span> </a> -  <span class="text-muted">{{needyamin.time_posted}} </span><br>
+          {{needyamin.comment}} </p>  </div>
+        
+
+          {% endfor %}
+
+       {% if comm_in.has_next %}
+      <a href="?page={{ comm_in.next_page_number }}#comment" class="btn btn-light">Next Commment</a>
+      {% endif %}
+      
+      {% if comm_in.has_previous %}
+          <a href="?page={{ comm_in.previous_page_number }}#comment"  class="btn btn-light"> Previous Commment</a>
+      {% endif %}
+
+       </div>
+
+
+
+
+  <div class="card p-2" style="margin-top: 5px;" id="comment"> 
+        
+    {% if user.is_authenticated %}
+    
+
+<!-- success message-->
+        {% if messages %}
+         {% for message in messages %}
+         <div class="alert alert-success" role="alert" class="{{ message.tags }}"  {% if message.tags %}  {% endif %} > 
+           {{ message }} </div>
+        {% endfor %}
+        {% endif %}
+
+          <form method="POST"> Comment:<br>
+            {% csrf_token %}
+           <style>textarea
+              {
+                border:1px solid #999999;
+                width:100%;
+                margin:5px 0;
+                padding:3px;
+              }</style>
+
+            <textarea rows="4" name="comment" required> </textarea> <br>
+            <input type="submit" class="btn-primary" name="submit" value="Comment">
+          </form>
+          {% else %} 
+ <p> Please <a href="/login">login </a> before for comment..</p>
+          {% endif %}
+          </div>
+
+
+        </div> 
+
+
+        <div class="col-sm-4"> 
+        
+          <!-- ADMIN INFO START-->
+          <div class="card"> 
+            <a href="https://github.com/needyamin" style="color: black;">   
+              <img src="{% static 'YAMiN_IC.png' %}" id="imgx" width="80%" class="rounded mx-auto d-block">
+              </a>
+            
+            <div class="d-flex justify-content-center"> 
+            <span class="text text-secondary">YAMIN HOSSAIN SHOHAN </span> 
+           </div>
+
+            <div class="d-flex justify-content-center"> 
+            <span class="text-sm text-secondary">CS50W - Final Project</span>
+      
+            </div>
+
+       <div class="d-flex justify-content-center"> 
+            <span style="padding: 10px;"> <a href="https://github.com/needyamin" style="color: black;"> <i class="fa fa-github" aria-hidden="true" id="imgx"></i> </a></span> 
+
+            <span style="padding: 10px;"><a href="https://twitter.com/needyamin" style="color: black;"> <i class="fa fa-twitter-square" aria-hidden="true" id="imgx"></i></a></span>
+
+            <span style="padding: 10px;"> <a href="https://www.youtube.com/needyamin" style="color: black;"> <i class="fa fa-youtube-play" aria-hidden="true" id="imgx"></i></a></span>
+
+            <span style="padding: 10px;"> <a href="https://www.facebook.com/needyaminofficial/" style="color: black;"> <i class="fa fa-facebook-official" aria-hidden="true" id="imgx"></i></a></span>
+          </div>
+        </div>
+         <!-- ADMIN INFO END-->
+
+<style>
+  #imgx:hover {
+  /* Start the shake animation and make the animation last for 0.5 seconds */
+  animation: shake 0.5s;
+
+  /* When the animation is finished, start again */
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+</style>
+
+
+
+         <br>
+          
+         
+         
+
+         {% for needyamin in all %}
+         <div class="card">
+             <ul class="list-group list-group-flush">
+     
+                <div class="text-right" style="padding: 5px;"><span class="badge btn-danger" width="20px">{{ forloop.counter }} </span> </div>
+       
+                <a href="{{ needyamin.user }}/{{ needyamin.slug }}">   <img src="../media/{{ needyamin.image }}" style="padding: 10px;" class="rounded mx-auto d-block" width="100%"></a>
+               
+               <a href="{{ needyamin.user }}/{{ needyamin.slug }}"> 
+                 <li class="list-group-item">
+                   {{ needyamin.title }} </a> <br>
+                   <span class="text-muted"> {{ needyamin.date }}</span> <br>
+                   {{ needyamin.contents|striptags|slice:":55" }}
+               </li>
+             </ul>
+           </div>
+     {% endfor %}
+
+
+
+        
+        
+        </div>
+        </div>
+        </div>  
+
+{% endfor %}
+
+{% endblock %}

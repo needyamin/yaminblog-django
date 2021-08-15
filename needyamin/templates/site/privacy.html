@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+    
+
+<div class="container"> 
+
+
+  {% for me in fetch %}{{ me.privacy|safe }}{% endfor %}
+
+
+
+</div>
+
+
+
+{% endblock %}

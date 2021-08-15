@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    
+<title> Dashboard | SuperAdmin Panel</title>
+
+{% if request.user.is_superuser %}
+
+<div class="container"> 
+
+  <div class="alert alert-info alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Welcome SuperAdmin, {{ user.username }}!</strong> 
+  </div>
+
+<hr>
+<a href="{% url 'admin_pending' %}" class="btn-sm btn-primary">All Pending Post <span class="btn-danger badge">{{ count_pending }}</span></a>
+<span style="color: white;"> . </span>
+
+<a href="{% url 'admin_subscriber' %}" class="btn-sm btn-primary">All Subscriber <span class="btn-danger badge">{{ subscriber }}</span></a>
+<span style="color: white;"> . </span>
+
+<a href="{% url 'site_config' %}" class="btn-sm btn-primary">Site Config </a>
+<span style="color: white;"> . </span>
+
+<a href="{% url 'site_pages' %}" class="btn-sm btn-primary">Site Pages </a>
+
+<hr>
+<div class="row"> 
+<div class="col-sm-6">
+
+
+    <div class="card" style="margin-top: 15px;">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+          google.charts.load("current", {packages:["corechart"]});
+          google.charts.setOnLoadCallback(drawChart);
+          function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Task', 'Hours per Day'],
+              ['Pending',     {{ count_pending }}],
+              ['Draft',      {{ count_draft }}],
+              ['Rejected',      {{ count_rejected }}],
+              ['subscriber',      {{ subscriber }}],
+              ['Active Posts',    {{ count_active }}]
+            ]);
+        
+            var options = {
+              title: 'Hi, SuperAdmin! Here is the websites statistics',
+              is3D: true,
+            };
+        
+            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+            chart.draw(data, options);
+          }
+        </script>
+        </head>
+        
+        <div id="piechart_3d" style="max-width: 700px; height: 400px;"></div>
+        
+        
+</div></div>
+
+
+
+
+</div>
+
+<div class="col-sm-6 card">
+
+</div>
+
+
+ </div>
+
+{% else %}
+
+<div class="container"> 
+    <p> You have no permission for visit this page</p>
+    </div>
+
+ {% endif %}
+
+
+
+
+
+
+{% endblock %}

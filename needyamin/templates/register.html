@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+
+
+{% block head %}
+{% load static %}
+      <title>Register | {% for me in siteconfig %}{{ me.title }}{% endfor %}</title>
+       <link rel="icon" href="/media/{% for me in siteconfig %}{{ me.favourite_icon }}{% endfor %}" type="image/gif" sizes="16x16"> 
+       <meta charset="utf-8">
+       <meta content='{% for me in siteconfig %}{{ me.keywords }}{% endfor %}' name='keywords'/>
+       <meta name="Description" CONTENT="Login Panel">
+       <meta name="robots" content="noindex,nofollow">
+
+       <meta property="og:url" content="" />
+       <meta property="og:type" content="blog" />
+       <meta property="og:title" content="Login Panel"/>
+       <meta property="og:description" content="Login Panel" />
+       <meta property="og:image" content="{{ request.build_absolute_uri }}/..{% static 'YAMiN.png' %}" />
+
+{% endblock %}
+
+{% block body %}
+{% load static %}
+
+<div class="container"> 
+<div class="row"> 
+        
+        
+    <div class="col-sm-6">  
+
+
+
+        <style>
+            img:hover {
+              animation: shake 0.5s;
+              animation-iteration-count: infinite;
+            }
+            
+            @keyframes shake {
+              0% { transform: translate(1px, 1px) rotate(0deg); }
+              10% { transform: translate(-1px, -2px) rotate(-1deg); }
+              20% { transform: translate(-3px, 0px) rotate(1deg); }
+              30% { transform: translate(3px, 2px) rotate(0deg); }
+              40% { transform: translate(1px, -1px) rotate(1deg); }
+              50% { transform: translate(-1px, 2px) rotate(-1deg); }
+              60% { transform: translate(-3px, 1px) rotate(0deg); }
+              70% { transform: translate(3px, 1px) rotate(-1deg); }
+              80% { transform: translate(-1px, -1px) rotate(1deg); }
+              90% { transform: translate(1px, 2px) rotate(0deg); }
+              100% { transform: translate(1px, -2px) rotate(-1deg); }
+            }
+            </style>    
+
+
+<div id="accordion">
+    <div class="card">
+      <div class="card-header">
+        <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+<img src="{% static 'YAMiN.png' %}" width="40%" class="rounded mx-auto d-block"> <center><i class="fa fa-angle-double-down" aria-hidden="true"></i> </center></a>
+
+
+</div>
+<div id="collapseTwo" class="collapse" data-parent="#accordion">
+  <div class="card-body">
+    Before register an account to our website, please read our privacy policy. We will collect your cookies, IPs and other information for future actions. With due to respect, don't forget to read our conditions.
+  </div>
+</div>
+</div>
+</div>
+
+
+
+    </div> 
+
+        <div class="col-sm-6">  
+
+            <div class="card">
+                <div class="card-header">  
+
+    <h2>Register</h2>
+
+    {% if message %}
+    <div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>   {{ message }} </strong></div>
+    {% endif %}
+
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="email" name="email" placeholder="Email Address">
+        </div>
+
+
+        <div class="form-group">
+            <input class="form-control" type="password" name="password" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Register">
+    </form>
+<br>
+    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+
+    </div>
+
+
+</div></div></div>
+
+
+
+
+
+</div>
+{% endblock %}

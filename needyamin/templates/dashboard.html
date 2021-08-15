@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<title> Dashboard | User Panel</title>
+
+<div class="container"> 
+
+  <div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Welcome, {{ user.username }}!</strong> If you doing spam or your post will reject 5 times then we will suspend your account.. 
+  </div>
+
+
+<hr>
+<a href="/add_post" class="btn-sm btn-primary">Add New Post</a>
+<a href="/active_post" class="btn-sm btn-primary">Active Post <span class="btn-danger badge">{{ count_active }}</span></a>
+<a href="{% url 'pending_post' %}" class="btn-sm btn-primary">Pending Post <span class="btn-danger badge">{{ count_pending }}</span></a>
+<a href="{% url 'draft' %}" class="btn-sm btn-primary">Draft <span class="btn-danger badge">{{ count_draft }}</span></a>
+
+<a href="{% url 'user_profile' %}" class="btn-sm btn-primary">User Profile</a>
+
+{% if request.user.is_superuser %}
+<a href="/dashboard/siteadmin/" class="btn-sm btn-danger">Admin</a>
+{% endif %}
+
+<hr>
+<div class="row"> 
+<div class="col-sm-6">
+{% if count_rejected %}
+<input class="form-control" autofocus type="text" value="Currently you have {{ count_rejected }} rejected Post" disabled>
+{% endif %}
+<div class="card" style="margin-top: 15px;">
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load("current", {packages:["corechart"]});
+  google.charts.setOnLoadCallback(drawChart);
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['Task', 'Hours per Day'],
+      ['Pending',     {{ count_pending }}],
+      ['Draft',      {{ count_draft }}],
+      ['Rejected',   {{ count_rejected }}],
+      ['Active Posts',    {{ count_active }}]
+    ]);
+
+    var options = {
+      title: 'Hi, {{ user.username}}! Here is your activity statistics',
+      is3D: true,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+    chart.draw(data, options);
+  }
+</script>
+</head>
+
+<div id="piechart_3d" style="max-width: 700px; height: 400px;"></div>
+
+
+
+
+
+</div></div>
+
+
+
+<div class="col-sm-6 card" style="margin-top: 15px;">
+
+      <script type="text/javascript">
+        google.charts.load('current', {'packages':['table']});
+        google.charts.setOnLoadCallback(drawTable);
+  
+        function drawTable() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Top Ten Users');
+          data.addColumn('number', 'Last Login');
+          data.addRows([
+            ['{% for loop in total_users %}{{ loop.username }}',  {v: 10000, f: '{{ loop.last_login }}'}],
+            ['{% endfor %}---',  {v: 10000, f: '---'}]
+          ]);
+     
+          var table = new google.visualization.Table(document.getElementById('table_div'));
+  
+          table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+        }
+      </script> 
+      <div id="table_div"></div>
+   
+  
+
+<hr>
+
+      <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+  
+        function drawChart() {
+  
+          var data = google.visualization.arrayToDataTable([
+            ['Effort', 'Amount given'],
+            ['You Total Visited',  {{ num_visits }}],
+          ]);
+  
+          var options = {
+            pieHole: 0.5,
+            pieSliceTextStyle: {
+              color: 'black',
+            },
+            legend: 'none'
+          };
+  
+          var chart = new google.visualization.PieChart(document.getElementById('donut_single'));
+          chart.draw(data, options);
+        }
+      </script>
+    </head>
+    <body>
+      <div id="donut_single" style=" height: 200px;"></div> <div class="text-center">You Total Visited</div>
+    </body>
+  
+
+
+
+    </div></div>
+
+
+ </div>
+</div>
+
+
+</body>
+
+
+
+
+
+{% endblock %}

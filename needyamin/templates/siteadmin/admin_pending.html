@@ -1,0 +1,149 @@
+{% extends "siteadmin/index.html" %}
+
+{% block body %}
+<title>All Pending Post | SuperAdmin Panel </title>
+
+{% load static %}
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'datatables.css' %}"/>
+<script type="text/javascript" src="{% static 'jquery-3.5.1.js' %}"></script>
+<script type="text/javascript" src="{% static 'jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'dataTables.bootstrap4.min.js' %}"></script>
+
+
+<div class="container">
+
+  <hr>
+  <a href="{% url 'admin_pending' %}" class="btn-sm btn-secondary">All Pending Post <span class="btn-danger badge">{{ count_pending }}</span></a>
+  <span style="color: white;"> . </span>
+  
+  <a href="{% url 'admin_subscriber' %}" class="btn-sm btn-primary">All Subscriber <span class="btn-danger badge">{{ count_subscriber }}</span></a>
+  <span style="color: white;"> . </span>
+  
+  <a href="{% url 'site_config' %}" class="btn-sm btn-primary">Site Config </a>
+  <span style="color: white;"> . </span>
+  
+  <a href="{% url 'site_pages' %}" class="btn-sm btn-primary">Site Pages </a>
+  
+  <hr>
+
+
+    <hr>
+Total Pending: {{ count_pending }}
+    <hr>
+  
+
+
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container"><div class="alert alert-danger" role="alert" class="{{ message.tags }}"  {% if message.tags %}  {% endif %} > 
+      {{ message }} </div></div>
+    {% endfor %}
+    {% endif %}
+    
+
+
+<table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Post Title</th>
+                <th>Post Description</th>
+                <th>Date</th>
+                <th>Image</th>
+                <th>IP</th>
+                <th>Username </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for needyamin in pending_post %}
+            <tr>
+                <td style="word-break: break-all;">{{ needyamin.title|slice:":50" }}</td>
+                <td width="300px" style="word-break: break-all;">{{ needyamin.contents|striptags|slice:":250" }}
+
+<!-- Large modal -->
+<a href=""class="tex-primary" data-toggle="modal" data-target="#exampleModalLong{{ needyamin.id }}">Read More</a>
+
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="exampleModalLong{{ needyamin.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle" style="word-break: break-all;">"{{ needyamin.title }}" by <a href="/{{ needyamin.user }}">{{ needyamin.user }}</a></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <img src="../../media/{{ needyamin.image }}" class="rounded mx-auto d-block"> <br>
+        {{ needyamin.contents|safe }}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+                </td>
+                <td width="120px">{{ needyamin.date }} </td>
+                <td><img src="../../media/{{ needyamin.image }}" width="40%"></td>
+                <td>{{ needyamin.ip }}</td>
+                <td> <a href="/{{ needyamin.user }}">{{ needyamin.user }}</a></td>
+                <td width="80px">
+
+                  <a href="" class="text text-danger" data-toggle="modal" data-target="#delete{{ needyamin.id }}"> <i class="fa fa-trash" aria-hidden="true"></i></a>
+
+                  
+                  <span style="color: white;"> .</span>
+                  <a href="{% url 'admin_approve_draft' %}?id={{ needyamin.id }}" class="text text-success" ><i class="fa fa-check-circle" aria-hidden="true"></i></a>
+
+
+                  <span style="color: white;"> .</span>
+                  <a href="{% url 'admin_rejected_draft' %}?id={{ needyamin.id }}" class="text text-warning" ><i class="fa fa-exclamation" aria-hidden="true"></i></a>
+
+
+                  <!-- Modal -->
+                  <div class="modal fade bd-example-modal-lg" id="delete{{ needyamin.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                  <h2>Confirmation: Are you want to delete these draft?</h2>
+                  <h5>Post: {{ needyamin.title }} </h5>
+                          </div>
+                        <div class="modal-footer">
+                          <a href="{% url 'admin_delete_draft' %}?id={{ needyamin.id }}" class="btn btn-danger" >Delete</a>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                        </div>
+                      </div>
+                    </div>
+                    </div>         
+                                
+
+                </td>
+
+            </tr>
+  
+            {% endfor %}
+        </tbody>
+        
+    </table>
+    
+</div>
+<script> $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% block body %}
+{% load static %}
+
+
+<div class="container"> 
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+
+    <br>
+    
+    <div class="row">
+    <div class="col-sm-4">
+
+    <h2>Send your query</h2>
+    <form  action="{% url 'contactus' %}" method="post" style="width: 100%;">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="name" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="email" name="email" placeholder="Email Address" required>
+        </div>
+
+        <div class="form-group">
+            <textarea rows="4" cols="35" name="message" placeholder="Describe yourself message..." required>{% if request.GET.user %}{{ request.GET.user }}{% else %}{% endif %}</textarea>
+        </div>
+
+        <input class="btn btn-primary" type="submit" name="submit" value="Send Message">
+    </form>
+
+</div>
+
+
+
+
+<style>
+    img:hover {
+      animation: shake 0.5s;
+      animation-iteration-count: infinite;
+    }
+    
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      10% { transform: translate(-1px, -2px) rotate(-1deg); }
+      20% { transform: translate(-3px, 0px) rotate(1deg); }
+      30% { transform: translate(3px, 2px) rotate(0deg); }
+      40% { transform: translate(1px, -1px) rotate(1deg); }
+      50% { transform: translate(-1px, 2px) rotate(-1deg); }
+      60% { transform: translate(-3px, 1px) rotate(0deg); }
+      70% { transform: translate(3px, 1px) rotate(-1deg); }
+      80% { transform: translate(-1px, -1px) rotate(1deg); }
+      90% { transform: translate(1px, 2px) rotate(0deg); }
+      100% { transform: translate(1px, -2px) rotate(-1deg); }
+    }
+    </style>
+
+<div class="col-sm-8"> 
+    <a data-toggle="modal" data-target="#myModal">
+    <img src="{% static 'YAMiN.png' %}" width="40%" class="rounded mx-auto d-block">  
+     </a>
+
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Terms of Contact Service</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          This is a demo project for CS50W. Anyway if you have any complaint about our site users then please discribe here. Please before send any takedown notice, ready your "content" proof so we can proceed your request.
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+</div>
+</div>
+
+</div>
+
+
+</body>
+
+
+
+
+
+{% endblock %}

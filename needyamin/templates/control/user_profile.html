@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<title> User Profile | User Panel</title>
+
+<div class="container"> 
+
+<hr>
+
+{% if messages %}
+{% for message in messages %}
+<div class="container"><div class="alert alert-success" role="alert" class="{{ message.tags }}"  {% if message.tags %}  {% endif %} > 
+  {{ message }} </div></div>
+{% endfor %}
+{% endif %}
+
+
+<a href="/add_post" class="btn-sm btn-primary">Add New Post</a>
+<span style="color: white;"> .</span>
+
+<a href="/active_post" class="btn-sm btn-primary">Active Post <span class="btn-danger badge">{{ count_active }}</span></a>
+<span style="color: white;"> .</span>
+
+<a href="{% url 'pending_post' %}" class="btn-sm btn-primary">Pending Post <span class="btn-danger badge">{{ count_pending }}</span></a>
+<span style="color: white;"> .</span>
+
+<a href="{% url 'draft' %}" class="btn-sm btn-primary">Draft <span class="btn-danger badge">{{ count_draft }}</span></a>
+<span style="color: white;"> .</span>
+
+
+<a href="{% url 'user_profile' %}" class="btn-sm btn-secondary">User Profile</a> 
+<span style="color: white;"> .</span>
+
+{% if request.user.is_superuser %}
+<a href="/dashboard/siteadmin/" class="btn-sm btn-danger">Admin</a>
+{% endif %}
+
+<hr>
+
+
+
+
+
+{% if message %}
+<div class="alert alert-danger alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>   {{ message }} </strong></div>
+{% endif %}
+
+<div class="row"> 
+<div class="col-sm-6">
+
+
+  <form action="{% url 'user_profile' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label>Username: <span class="text-muted">(You can't your username)</span></label>
+        <input class="form-control" autofocus type="text" name="username" value="{% for me in fetch %} {{ me.username}} {% endfor %}" placeholder="Username" disabled>
+    </div>
+ 
+
+    <div class="form-group">
+        <label>First Name:</label>
+        <input class="form-control" type="text" name="first_name" value="{% for me in fetch %}{{ me.first_name}}{% endfor %}" placeholder="First Name">
+    </div>
+    <div class="form-group">
+        <label>Last Name:</label>
+        <input class="form-control" type="text" name="last_name" value="{% for me in fetch %}{{ me.last_name}}{% endfor %}" placeholder="Last Name">
+    </div>
+    <input class="btn btn-primary" type="submit" value="Update">
+</form>
+
+
+</div>
+
+
+<div class="col-sm-6" style="margin-top: 15px;">
+    <form action="{% url 'user_profile_email' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Your Email:</label>
+            <input class="form-control" type="email" name="email" value="{% for me in fetch %} {{ me.email}} {% endfor %}" placeholder="Email Address">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Change Email">
+        </form>
+
+        <br>
+
+
+<a href="/dashboard/user_profile/passwords/" class="btn btn-danger"> Change Password</a>
+</div>
+</div>
+
+
+
+
+{% endblock %}

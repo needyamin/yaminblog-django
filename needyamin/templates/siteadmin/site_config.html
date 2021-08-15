@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<title> Site Config | SuperAdmin Panel</title>
+
+
+{% if request.user.is_superuser %}
+    
+{% load static %}
+<div class="container"> 
+
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container"><div class="alert alert-danger" role="alert" class="{{ message.tags }}"  {% if message.tags %}  {% endif %} > 
+      {{ message }} </div></div>
+    {% endfor %}
+    {% endif %}
+
+
+
+
+  <div class="alert alert-info alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Welcome SuperAdmin, {{ user.username }}!</strong> 
+  </div>
+
+
+    
+<hr>
+<a href="{% url 'admin_pending' %}" class="btn-sm btn-primary">All Pending Post <span class="btn-danger badge">{{ count_pending }}</span></a>
+<span style="color: white;"> . </span>
+
+<a href="{% url 'admin_subscriber' %}" class="btn-sm btn-primary">All Subscriber <span class="btn-danger badge">{{ count_subscriber }}</span></a>
+<span style="color: white;"> . </span>
+
+<a href="{% url 'site_config' %}" class="btn-sm btn-secondary">Site Config </a>
+<span style="color: white;"> . </span>
+
+<a href="{% url 'site_pages' %}" class="btn-sm btn-primary">Site Pages </a>
+
+<hr>
+
+
+<div class="row"> 
+<div class="col-sm-6">
+
+<!-- form start-->
+<form action="{% url 'site_config' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label>Website Title: <span class="text-muted">(You can't your username)</span></label>
+        <input class="form-control" autofocus type="text" name="title" value="{% for needyamin in fetch %}{{ needyamin.title }}{% endfor %}" placeholder="Website Title">
+    </div>
+ 
+
+    <div class="form-group">
+        <label>Website Keyword:</label>
+        <input class="form-control" type="text" name="keywords" value="{% for needyamin in fetch %}{{ needyamin.keywords }}{% endfor %}" placeholder="Blog, food, lifestyle, etc..">
+    </div>
+    <div class="form-group">
+        <label>Website Description</label> <br>
+        <textarea name="description" style="width:100%;" placeholder="Website's Long Description">{% for needyamin in fetch %}{{ needyamin.description }}{% endfor %}</textarea>
+    </div>
+
+
+    <div class="form-group">
+      <label>Google Analytics, Webmasters, Other Header Tags</label> <br>
+      <textarea name="script_add" style="width:100%;" placeholder="Put header metatags">{% for needyamin in fetch %}{{ needyamin.script_add }}{% endfor %}</textarea>
+  </div>
+
+    <input class="btn btn-primary" type="submit" value="Update">
+</form>
+
+
+
+
+
+
+</div>
+
+
+<div class="col-sm-6">
+
+<!-- Form 2-->
+<form action="{% url 'admin_favicon' %}" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+    <div class="form-group">
+        <label>Favicon</label> <br>
+        <img id="blah" src="/media/{% for needyamin in fetch %}{{ needyamin.favourite_icon }}{% endfor %}" width="50px" onerror="this.onerror=null; this.src='{% static 'not-selected.jpg' %}'" /> <br>
+        <input accept="image/*" type="file" id="image" name="favourite_icon" required>
+
+        <script>image.onchange = evt => {
+            const [file] = image.files
+            if (file) {
+              blah.src = URL.createObjectURL(file)
+            }
+          } </script> 
+    </div>
+
+    <input class="btn btn-primary" type="submit" value="Update Favicon">
+</form>
+
+
+</div>
+
+
+ </div>
+
+{% else %}
+
+<div class="container"> 
+    <p> You have no permission for visit this page</p>
+    </div>
+
+ {% endif %}
+
+
+
+
+
+
+{% endblock %}

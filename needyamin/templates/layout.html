@@ -1,0 +1,117 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head> 
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+       {% block head %}
+      
+        {% endblock %}
+        
+
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        
+        <link href="{% static 'styles.css' %}" rel="stylesheet">
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style> 
+@media screen and (max-width:584px) {#mobile{display:none;}}
+@media screen and (max-width:284px) {#mobile{display:none;}}
+</style>
+
+    </head>
+
+
+    <body>
+        <div class="container"> 
+
+
+
+   <nav class="navbar navbar-expand-lg navbar-light" style="background: skyblue; padding:20px; border:1px solid gray;">
+       <a class="navbar-brand" href="/"> <img src="{% static 'Yamin.png' %}" width="100px"></a>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+       </button>
+     
+       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+<ul class="navbar-nav mr-auto">
+  {% if user.is_authenticated %}
+
+  <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}"><i class="fa fa-tachometer" aria-hidden="true"></i> <strong style="font-size: 14px;">Dashboard </strong></a></li>
+
+  <li class="nav-item"><a class="nav-link" href="{% url 'add_post' %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+    <strong style="font-size: 14px;">Add Post 
+  </strong></a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'active_post' %}"><i class="fa fa-globe" aria-hidden="true"></i>
+    <strong style="font-size: 14px;">Active Post 
+  </strong></a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'pending_post' %}"><i class="fa fa-spinner" aria-hidden="true"></i>
+    <strong style="font-size: 14px;">Pending 
+  </strong></a></li>
+
+   
+
+  {% else %}
+  <li class="nav-item">
+      <a class="nav-link" href="{% url 'register' %}" style="font-size: 14px;">Register</a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link" href="{% url 'login' %}" style="font-size: 14px;">Log In</a>
+  </li>
+       {% endif %}
+
+
+</ul>
+
+
+    
+
+<form class="form-inline my-2 my-lg-0" action="{% url 'search' %}">
+  <input class="inputGroup-sizing-sm"    
+  type="search" placeholder="Search" aria-label="Search.." name="q">
+  <button class="btn-small btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
+{% if user.is_authenticated %} 
+<span class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{ user.username }}
+  </a>
+  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <a class="dropdown-item" href="{% url 'dashboard' %}" style="font-size: 14px;">Dashboard</a>
+    <a class="dropdown-item" href="{% url 'user_profile' %}" style="font-size: 14px;">My Profile</a>
+    <a class="dropdown-item" href="{% url 'draft' %}" style="font-size: 14px;">My Draft</a>
+    <a class="dropdown-item" href="{% url 'add_post' %}" style="font-size: 14px;">New Post</a>
+    <a class="dropdown-item" href="{% url 'active_post' %}" style="font-size: 14px;">Active Post </a>
+    <a class="dropdown-item" href="{% url 'pending_post' %}" style="font-size: 14px;">Pending Post</a>
+    {% if request.user.is_superuser %}
+    <a href="/dashboard/siteadmin/" class="dropdown-item" style="background: red;color: white; font-weight: bold;">Admin</a>
+    {% endif %}
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="{% url 'logout' %}" style="font-size: 14px;">Log Out</a>
+  </div>
+</span> 
+{% endif %}
+       </div>
+     </nav>
+        </div>
+
+        <div class="body" style="margin-top: 10px;">
+ 
+   {% block body %}
+   {% endblock %}
+        </div>
+    </body>
+    <br>
+    <div class="container" style="text-align: center;">   
+        <div class="jumbotron">  Copyright 2021 by <a href="https://github.com/needyamin">YAMiN</a> <br> <a href="{% url 'privacy' %}">Privacy Policy</a> . <a href="{% url 'contactus' %}">Contact Us</a> . <a href="{% url 'aboutus' %}">About Us</a> .  <a href="{% url 'sitemap' %}">Sitemap</a>
+
+    </div></div>
+</html>

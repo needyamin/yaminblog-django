@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+    
+
+<div class="container"> 
+
+
+  {% for me in fetch %}{{ me.aboutus|safe }}{% endfor %}
+
+
+
+</div>
+
+
+
+{% endblock %}

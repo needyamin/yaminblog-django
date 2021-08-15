@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+
+
+{% block head %}
+{% load static %}
+
+<title>{% for needyamin in user %}{{needyamin.username }} {% endfor %} | {% for me in siteconfig %}{{ me.title }}{% endfor %}</title>
+ <link rel="icon" href="/media/{% for me in siteconfig %}{{ me.favourite_icon }}{% endfor %}" type="image/gif" sizes="16x16"> 
+ <meta charset="utf-8">
+ <meta content='{% for me in siteconfig %}{{ me.keywords }}{% endfor %}' name='keywords'/>
+ <meta name="Description" CONTENT="{% for needyamin in user %}{{ needyamin.email }}{% endfor %}">
+ <meta name="robots" content="noindex,nofollow">
+
+ <meta property="og:url" content="" />
+ <meta property="og:type" content="blog" />
+ <meta property="og:title" content="{% for me in siteconfig %}{{ me.title }}{% endfor %}"/>
+ <meta property="og:description" content="{% for needyamin in user %}{{ needyamin.email }}{% endfor %}" />
+ <meta property="og:image" content="{{ request.build_absolute_uri }}..{% static 'YAMiN.png' %}" />
+ {% endblock %}
+
+
+
+
+{% block body %}
+
+<div class="container">
+
+    <div class="row p-2"> 
+
+<div class="col-sm-6">   
+<div class="card p-4">
+
+{% for needyamin in user %}
+<span style="font-size: 22px;"> <i class="fa fa-user" aria-hidden="true"></i> {{needyamin.username }} </span>
+<b> <i class="fa fa-envelope" aria-hidden="true"></i>  {{ needyamin.email }}</b><br>
+<p>{{ needyamin.first_name }} {{ needyamin.last_name }} 
+    <span class="text-muted"> Last Login: {{ needyamin.last_login }}</span>  <br>
+<a href="{% url 'contactus' %}?user=Report to @{{needyamin.username }}, "> Report This User</a>   
+
+</p>
+ {% endfor %}
+
+ </div> </div> 
+
+
+
+ <div class="col-sm-6">   
+    <div class="card p-4">
+        <p> <i class="fa fa-clipboard" aria-hidden="true"></i> Active Post: 
+            <span class="btn-danger badge">{{ count_post }} </span></p>
+
+        <p> <i class="fa fa-clipboard" aria-hidden="true"></i> 
+            Pending Post: <span class="btn-danger badge"> {{ count_pending_post }}</span></p>
+
+        <p> <i class="fa fa-clipboard" aria-hidden="true"></i> 
+            You Visited: <span class="btn-danger badge">{{ num_visits }} </span> </p>
+     </div> </div> 
+
+
+</div>  
+
+
+{% if posts %}
+{% else %}
+<div class="card p-3"> No post found for this user... </div>
+{% endif %}
+
+
+{% if count_rejected %}
+<input class="form-control text-danger" autofocus type="text" value="This user have {{ count_rejected }} rejected Post" disabled>
+{% endif %}
+
+
+<div class="row"> <div class="col-sm-6"> </div> <div class="col-sm-6"> </div>  </div>
+{% for needyamin in posts %}
+
+
+<div class="card p-2">
+  <table> <tr> 
+    <td width="300px" id="mobile"> 
+  <a href="{{ needyamin.slug }}"><img style="width: 100%;" src="../media/{{ needyamin.image }}"></a>
+    <div class="card-body">
+    </td> 
+    <td style="padding: 10px;">
+      <h5 class="card-title" style="word-break: break-all;">{{ needyamin.title }} </h5>
+      <p class="card-text">{{ needyamin.contents|striptags|slice:":255" }}</p>
+      <a href="/{{ needyamin.user }}/{{ needyamin.slug }}">Read More..</a>
+    </div>
+  </td></tr></table>
+  </div><br>
+
+
+  
+  {% endfor %}
+
+  {% if posts.has_next %}
+  <a href="?page={{ posts.next_page_number }}" class="btn btn-danger">Next Page</a>
+  {% endif %}
+  
+  {% if posts.has_previous %}
+      <a href="?page={{ posts.previous_page_number }}"  class="btn btn-danger"> Previous Page</a>
+  {% endif %}
+  
+
+</div> 
+
+</div>
+
+
+
+
+ 
+
+{% endblock %}
