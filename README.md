@@ -102,6 +102,11 @@ And last tab in Admin panel, The "SiteConfig". Here super admins can update webs
 > Blog slider always displayed last three blog post.
 
 
+***************************************************
+# Demo Video And Screeshot
+> Demo Video: https://youtu.be/mNAMMqLofw0
 
+> Screenshot: https://needyamincv.blogspot.com/2021/08/yamin-blog-cms-publishing-tools-with.html
+***************************************************
 
 For any technical help, please feel free to contact needyamin@ansnew.com
